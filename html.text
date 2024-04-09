@@ -67,15 +67,22 @@ def setup(choose, cookie, page_id, admin_id, pass_admin):
             d_set_admin = f"av={page_id}&__aaid=0&__user={page_id}&__a=1&__req=p&__hs=19817.HYP%3Acomet_plat_default_pkg.2.1..2.1&dpr=1.5&__ccg=GOOD&__rev=1012539641&__s=547w6i%3A52buzi%3A0xxoej&__hsi=7354056242763316785&__dyn=7AzHxqU5a5Q1ryUbFp40C8b8nwgUao5-ewSwMwNw9G2S0im3y4o1DU2_CxS320om782Cwwwqo462mcwfG1Rx62G5Usw9m1YwBgK7o884y1uwoE2sx-3m1mzXw8W58jwGzEaE766FobrwKxm5o7G4-5o4q3y1MBx_wHwfCm2Sq2-azo2NwkQ0z8c86-bwHwNxe6Uak0zU8oC1Iwqo4e4UcEeE4WVU8Edouw&__csr=gqhQymMDb4ivJ-GW8pBjhGKiFe4FVlyFprHBAGWHAxzQBGWFAyp8GcAypoy4UVp8-dGbBzQKcx6498kxyh0yxl5GUkwxUGu9DAwHK78yaHSexO4VUlx6m5pUhwa6U8E9ogyE8UN2E5i4obo4i9woUoz8uwj8rBx-2W1Jwsomzo5-1Cw4Nw05Ryw3Gi01Bu02xR00gyEeVnw1Aq02P20dfw7cw7Dg12pA6e07tE0DR0&__comet_req=1&fb_dtsg={dtsg}&jazoest=25504&lsd=rc85URDWojCBCtkPGDO3WR&__spin_r=1012539641&__spin_b=trunk&__spin_t=1712249647&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=ProfilePlusCoreAppAdminInviteMutation&variables=%7B%22input%22%3A%7B%22additional_profile_id%22%3A%22{page_id}%22%2C%22admin_id%22%3A%22100056767516324%22%2C%22admin_visibility%22%3A%22Unspecified%22%2C%22grant_full_control%22%3Afalse%2C%22actor_id%22%3A%22{page_id}%22%2C%22client_mutation_id%22%3A%222%22%7D%7D&server_timestamps=true&doc_id=5707097792725637"
             a = requests.post("https://www.facebook.com/api/graphql/", headers=h, data=d_set_admin)
             print(a.text)
-            a =a.json()
-            print("Set admin success!")
+            b =a.json()
+            if '"is_invite_sent"' in a.text:
+                print("Set admin success!")
+            else:
+                print("Set admin error!")
         except:
             print("Set admin error!")
     else:
         try:
             d_remove_admin = f"av={page_id}&__aaid=0&__user={page_id}&__a=1&__req=l&__hs=19816.HYP%3Acomet_plat_default_pkg.2.1..2.1&dpr=1.5&__ccg=GOOD&__rev=1012513638&__s=rune1r%3Ahc0oyp%3Ayojbgm&__hsi=7353752630854221061&__dyn=7AzHxqU5a5Q1ryUbFp40C8b8nwgUao5-ewSwMwNw9G2S0im3y4o1DU2_CxS320om782Cwwwqo462mcwfG1Rx62G5Usw9m1YwBgK7o884y1uwoE2sx-3m1mzXw8W58jwGzEaE766FobrwKxm5o7G4-5o4q3y1MBx_wHwfCm2Sq2-azo2NwkQ0z8c86-bwHwNxe6Uak0zU8oC1Iwqo4e4UcEeE4WVU8Edouw&__csr=guO8W5NkmCWF9934F2eCOOfAx2Uiiyby8GQSmVauurLByHDKqudyHKayV8pCyVESUyKl2EO2m9Ayu6HG5EWu8GfxS9G7u9xOfx25ES9WDAQEvyrgoxXwDwrooxG1syoS3Lg_wBwmUy5U8U7efzo6Si4oO2O1bwcBwYw8q0-o01v4E0Bt6y80l7w0qVGBTwcq07So08To0hgw7jw8p04Hl0UQ023G09jwoo&__comet_req=1&fb_dtsg={dtsg}&jazoest=25501&lsd=uAJ4H3DJAW7DyPbgKVXA7S&__spin_r=1012513638&__spin_b=trunk&__spin_t=1712178958&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=ProfilePlusRemoveCoreAppAdminMutation&variables=%7B%22input%22%3A%7B%22additional_profile_id%22%3A%22{page_id}%22%2C%22admin_id%22%3A%22{admin_id}%22%2C%22grant_full_control%22%3Afalse%2C%22actor_id%22%3A%22{page_id}%22%2C%22client_mutation_id%22%3A%222%22%7D%7D&server_timestamps=true&doc_id=9529441547128945"
-            a = requests.post("https://www.facebook.com/api/graphql/", headers=h, data=d_remove_admin).json()
-            print("Remove admin success!")
+            a = requests.post("https://www.facebook.com/api/graphql/", headers=h, data=d_remove_admin)
+            b =a.json()
+            if 'remove_core_app_admin' in a.text:
+                print("Remove admin success!")
+            else:
+                print("Remove admin error!")
         except:
             print("Remove admin error!")
 
@@ -120,7 +127,19 @@ d = gzip.compress(('doc_id=4460605510683312&method=post&locale=vi_VN&pretty=fals
 a = requests.post("https://graph.facebook.com/graphql", headers=headers, data=d).json()
 pages = (a["data"]["user"]["profile_switcher_eligible_profiles"]["edges"])
 for i in pages:
-    list_page.append([i["node"]["profile"]["name"], i["node"]["profile"]["id"], i["node"]["session_info"]["access_token"]])
+    json_strings = i["node"]["session_info"]["session_cookies"]
+
+    cookie = ""
+
+    # Loop through the list of JSON strings
+    for json_string in json_strings:
+        # Parse the JSON string into a Python dictionary
+        data = json.loads(json_string)
+        
+        # Add the name and value to the cookie string
+        cookie += f'{data["name"]}={data["value"]}; '
+
+    list_page.append([i["node"]["profile"]["name"], i["node"]["profile"]["id"], i["node"]["session_info"]["access_token"], cookie])
 
 os.system("cls" if os.name == "nt" else "clear")
 
@@ -136,6 +155,7 @@ while True:
 os.system("cls" if os.name == "nt" else "clear")
 page_id = choice[1]
 token = choice[2]
+ck_page = choice[3]
 
 
 list_admin = []
@@ -188,10 +208,9 @@ while True:
         os.system("cls" if os.name == "nt" else "clear")
         if a == "1":
             admin_id = input("Admin id: ")
-            page_id_url = input("Page id (id page get from url): ")
-            cookie_page = input("Cookie page: ")
+            page_id_url = ck_page.split("; i_user=")[1].split(";")[0] 
             pass_admin = input("Password admin (password of cookie account, not cookie page): ")
-            setup(1, cookie_page, page_id_url, admin_id, pass_admin)
+            setup(1, ck_page, page_id_url, admin_id, pass_admin)
         elif a == "2":
             while True:
                 for i in list_admin:
@@ -200,10 +219,9 @@ while True:
                 if admin.isdigit() and int(admin) <= len(list_admin):
                     admin_id = list_admin[int(admin)-1][1]
                     break
-            page_id_url = input("Page id (id page get from url): ")
-            cookie_page = input("Cookie page: ")
+            page_id_url = ck_page.split("; i_user=")[1].split(";")[0] 
             pass_admin = input("Password admin (password of cookie account, not cookie page): ")
-            setup(2, cookie_page, page_id_url, admin_id, pass_admin)
+            setup(2, ck_page, page_id_url, admin_id, pass_admin)
         else:
             list_admin = []
 
