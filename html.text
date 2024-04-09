@@ -66,7 +66,6 @@ def setup(choose, cookie, page_id, admin_id, pass_admin):
         try:
             d_set_admin = f"av={page_id}&__aaid=0&__user={page_id}&__a=1&__req=p&__hs=19817.HYP%3Acomet_plat_default_pkg.2.1..2.1&dpr=1.5&__ccg=GOOD&__rev=1012539641&__s=547w6i%3A52buzi%3A0xxoej&__hsi=7354056242763316785&__dyn=7AzHxqU5a5Q1ryUbFp40C8b8nwgUao5-ewSwMwNw9G2S0im3y4o1DU2_CxS320om782Cwwwqo462mcwfG1Rx62G5Usw9m1YwBgK7o884y1uwoE2sx-3m1mzXw8W58jwGzEaE766FobrwKxm5o7G4-5o4q3y1MBx_wHwfCm2Sq2-azo2NwkQ0z8c86-bwHwNxe6Uak0zU8oC1Iwqo4e4UcEeE4WVU8Edouw&__csr=gqhQymMDb4ivJ-GW8pBjhGKiFe4FVlyFprHBAGWHAxzQBGWFAyp8GcAypoy4UVp8-dGbBzQKcx6498kxyh0yxl5GUkwxUGu9DAwHK78yaHSexO4VUlx6m5pUhwa6U8E9ogyE8UN2E5i4obo4i9woUoz8uwj8rBx-2W1Jwsomzo5-1Cw4Nw05Ryw3Gi01Bu02xR00gyEeVnw1Aq02P20dfw7cw7Dg12pA6e07tE0DR0&__comet_req=1&fb_dtsg={dtsg}&jazoest=25504&lsd=rc85URDWojCBCtkPGDO3WR&__spin_r=1012539641&__spin_b=trunk&__spin_t=1712249647&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=ProfilePlusCoreAppAdminInviteMutation&variables=%7B%22input%22%3A%7B%22additional_profile_id%22%3A%22{page_id}%22%2C%22admin_id%22%3A%22100056767516324%22%2C%22admin_visibility%22%3A%22Unspecified%22%2C%22grant_full_control%22%3Afalse%2C%22actor_id%22%3A%22{page_id}%22%2C%22client_mutation_id%22%3A%222%22%7D%7D&server_timestamps=true&doc_id=5707097792725637"
             a = requests.post("https://www.facebook.com/api/graphql/", headers=h, data=d_set_admin)
-            print(a.text)
             b =a.json()
             if '"is_invite_sent"' in a.text:
                 print("Set admin success!")
